@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Philipe Emanuel | Desenvolvedor Front-End</title>
+<meta name="description" content="Philipe Emanuel — Desenvolvedor Front-End em Cianorte, PR. Crio sites profissionais para pequenos negócios.">
+<style>
+  :root{
+    --navy-950:#050b1a;
+    --navy-900:#0a1530;
+    --navy-800:#0f1f42;
+    --navy-700:#16295a;
+    --blue-600:#2563eb;
+    --blue-500:#3b82f6;
+    --blue-400:#60a5fa;
+    --cyan-400:#22d3ee;
+    --text-main:#eaf1ff;
+    --text-muted:#93a5c9;
+    --card-bg:rgba(255,255,255,0.04);
+    --card-border:rgba(255,255,255,0.09);
+    --radius-lg:20px;
+    --radius-md:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    background:var(--navy-950);
+    color:var(--text-main);
+    overflow-x:hidden;
+  }
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  img{max-width:100%; display:block;}
+
+  /* background glow */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(37,99,235,0.28), transparent 45%),
+      radial-gradient(circle at 85% 0%, rgba(34,211,238,0.18), transparent 40%),
+      radial-gradient(circle at 50% 100%, rgba(37,99,235,0.15), transparent 50%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .wrap{max-width:1100px; margin:0 auto; padding:0 24px; position:relative; z-index:1;}
+
+  /* NAV */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(5,11,26,0.75);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px; max-width:1100px; margin:0 auto;
+  }
+  .logo{font-weight:700; font-size:1.15rem; letter-spacing:.3px;}
+  .logo span{color:var(--blue-400);}
+  .nav-links{display:flex; gap:32px; align-items:center;}
+  .nav-links a{
+    font-size:.95rem; color:var(--text-muted); transition:color .2s;
+  }
+  .nav-links a:hover{color:var(--text-main);}
+  .nav-cta{
+    background:linear-gradient(135deg,var(--blue-600),var(--cyan-400));
+    color:#031024; font-weight:600; padding:10px 20px; border-radius:999px;
+    font-size:.9rem; transition:transform .2s, box-shadow .2s;
+  }
+  .nav-cta:hover{transform:translateY(-2px); box-shadow:0 8px 24px rgba(37,99,235,.35);}
+  .menu-btn{display:none; background:none; border:none; color:var(--text-main); font-size:1.6rem; cursor:pointer;}
+
+  /* HERO */
+  .hero{
+    padding:110px 24px 90px;
+    text-align:center;
+    position:relative;
+  }
+  .avatar{
+    width:132px; height:132px; border-radius:50%;
+    margin:0 auto 28px;
+    background:linear-gradient(135deg,var(--blue-600),var(--cyan-400));
+    padding:4px;
+    box-shadow:0 0 0 1px rgba(255,255,255,0.08), 0 20px 60px rgba(37,99,235,.35);
+  }
+  .avatar-inner{
+    width:100%; height:100%; border-radius:50%;
+    background:var(--navy-800);
+    display:flex; align-items:center; justify-content:center;
+    font-size:2.6rem; font-weight:700; color:var(--blue-400);
+    overflow:hidden;
+  }
+  .avatar-inner img{width:100%; height:100%; object-fit:cover;}
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--card-bg); border:1px solid var(--card-border);
+    padding:6px 16px; border-radius:999px; font-size:.82rem; color:var(--text-muted);
+    margin-bottom:22px;
+  }
+  .badge .dot{width:8px; height:8px; border-radius:50%; background:#34d399; box-shadow:0 0 8px #34d399;}
+  .hero h1{
+    font-size:clamp(2.1rem, 5vw, 3.4rem);
+    font-weight:800; line-height:1.15; margin-bottom:16px;
+    letter-spacing:-.5px;
+  }
+  .hero h1 .grad{
+    background:linear-gradient(135deg,var(--blue-400),var(--cyan-400));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero p{
+    max-width:600px; margin:0 auto 36px; color:var(--text-muted);
+    font-size:1.08rem; line-height:1.6;
+  }
+  .hero-ctas{display:flex; gap:16px; justify-content:center; flex-wrap:wrap;}
+  .btn{
+    padding:14px 28px; border-radius:999px; font-weight:600; font-size:.98rem;
+    display:inline-flex; align-items:center; gap:8px; transition:transform .2s, box-shadow .2s, background .2s;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--blue-600),var(--cyan-400));
+    color:#031024;
+  }
+  .btn-primary:hover{transform:translateY(-3px); box-shadow:0 12px 32px rgba(37,99,235,.4);}
+  .btn-ghost{
+    background:var(--card-bg); border:1px solid var(--card-border); color:var(--text-main);
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,0.08); transform:translateY(-3px);}
+
+  /* SECTIONS */
+  section{padding:90px 24px;}
+  .section-label{
+    color:var(--blue-400); text-transform:uppercase; letter-spacing:2px;
+    font-size:.78rem; font-weight:700; margin-bottom:10px; text-align:center;
+  }
+  .section-title{
+    text-align:center; font-size:clamp(1.6rem,3.5vw,2.2rem); font-weight:800; margin-bottom:16px;
+  }
+  .section-sub{
+    text-align:center; color:var(--text-muted); max-width:560px; margin:0 auto 56px;
+    font-size:1rem; line-height:1.6;
+  }
+
+  /* ABOUT */
+  .about{
+    display:grid; grid-template-columns:1fr; gap:40px; align-items:center;
+  }
+  .about-card{
+    background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius-lg);
+    padding:40px; max-width:760px; margin:0 auto;
+  }
+  .about-card p{color:var(--text-muted); line-height:1.85; font-size:1.02rem; margin-bottom:16px;}
+  .about-card p:last-child{margin-bottom:0;}
+  .about-stats{
+    display:flex; gap:36px; justify-content:center; margin-top:36px; flex-wrap:wrap;
+  }
+  .stat{text-align:center;}
+  .stat b{display:block; font-size:1.6rem; font-weight:800; color:var(--blue-400);}
+  .stat span{font-size:.85rem; color:var(--text-muted);}
+
+  /* SERVICES */
+  .services-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+  }
+  .service-card{
+    background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius-md);
+    padding:32px 26px; transition:transform .25s, border-color .25s, background .25s;
+  }
+  .service-card:hover{
+    transform:translateY(-6px); border-color:rgba(59,130,246,.4); background:rgba(255,255,255,0.06);
+  }
+  .service-icon{
+    width:50px; height:50px; border-radius:14px;
+    background:linear-gradient(135deg,var(--blue-600),var(--cyan-400));
+    display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:20px;
+  }
+  .service-card h3{font-size:1.12rem; margin-bottom:10px; font-weight:700;}
+  .service-card p{color:var(--text-muted); font-size:.94rem; line-height:1.6;}
+
+  /* PORTFOLIO */
+  .project-card{
+    background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius-lg);
+    overflow:hidden; max-width:820px; margin:0 auto;
+    display:grid; grid-template-columns:1fr 1fr;
+  }
+  .project-visual{
+    background:linear-gradient(160deg,var(--navy-700),var(--navy-800));
+    padding:40px 30px; display:flex; flex-direction:column; justify-content:center; gap:14px;
+    position:relative; min-height:260px;
+  }
+  .browser-chrome{
+    display:flex; gap:6px; margin-bottom:8px;
+  }
+  .browser-chrome span{width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,.18);}
+  .project-visual h4{font-size:1.3rem; font-weight:800;}
+  .project-visual .tag{
+    display:inline-block; background:rgba(59,130,246,.18); color:var(--blue-400);
+    font-size:.75rem; font-weight:700; padding:4px 12px; border-radius:999px; width:fit-content;
+  }
+  .project-info{padding:36px 30px; display:flex; flex-direction:column; justify-content:center;}
+  .project-info p{color:var(--text-muted); line-height:1.7; margin-bottom:22px; font-size:.96rem;}
+  .project-info .btn{align-self:flex-start;}
+  .more-soon{
+    text-align:center; margin-top:28px; color:var(--text-muted); font-size:.9rem;
+  }
+
+  /* CONTACT */
+  .contact-card{
+    background:linear-gradient(135deg, rgba(37,99,235,.15), rgba(34,211,238,.08));
+    border:1px solid rgba(59,130,246,.3);
+    border-radius:var(--radius-lg);
+    padding:56px 40px; text-align:center; max-width:720px; margin:0 auto;
+  }
+  .contact-card h2{font-size:clamp(1.5rem,3vw,2rem); font-weight:800; margin-bottom:14px;}
+  .contact-card p{color:var(--text-muted); margin-bottom:32px; font-size:1rem;}
+  .contact-ctas{display:flex; gap:16px; justify-content:center; flex-wrap:wrap;}
+  .contact-links{
+    display:flex; gap:28px; justify-content:center; margin-top:32px; flex-wrap:wrap;
+  }
+  .contact-links a{color:var(--text-muted); font-size:.9rem; transition:color .2s;}
+  .contact-links a:hover{color:var(--blue-400);}
+
+  footer{
+    padding:32px 24px; text-align:center; color:var(--text-muted); font-size:.85rem;
+    border-top:1px solid rgba(255,255,255,0.06);
+  }
+
+  /* floating whatsapp */
+  .float-wa{
+    position:fixed; bottom:24px; right:24px; z-index:60;
+    width:58px; height:58px; border-radius:50%;
+    background:linear-gradient(135deg,#25d366,#128c7e);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 30px rgba(37,211,102,.4);
+    font-size:1.6rem; transition:transform .2s;
+  }
+  .float-wa:hover{transform:scale(1.08);}
+
+  @media (max-width: 820px){
+    .services-grid{grid-template-columns:1fr;}
+    .project-card{grid-template-columns:1fr;}
+  }
+  @media (max-width: 720px){
+    .nav-links{
+      position:fixed; top:64px; left:0; right:0;
+      background:var(--navy-900); border-bottom:1px solid rgba(255,255,255,.08);
+      flex-direction:column; padding:20px 24px; gap:18px;
+      transform:translateY(-140%); transition:transform .3s ease;
+    }
+    .nav-links.open{transform:translateY(0);}
+    .menu-btn{display:block;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">Philipe<span>.dev</span></div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#portfolio">Portfólio</a></li>
+      <li><a href="#contato" class="nav-cta">Falar no WhatsApp</a></li>
+    </ul>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="avatar">
+      <div class="avatar-inner" id="avatarInner">PE</div>
+    </div>
+    <div class="badge"><span class="dot"></span> Disponível para novos projetos</div>
+    <h1>Olá, eu sou <span class="grad">Philipe Emanuel</span></h1>
+    <p>Desenvolvedor Front-End em Cianorte, PR. Crio sites rápidos, bonitos e profissionais para pequenos negócios que querem ser encontrados na internet.</p>
+    <div class="hero-ctas">
+      <a href="https://wa.me/5544999215031" class="btn btn-primary" target="_blank" rel="noopener">💬 Falar no WhatsApp</a>
+      <a href="#portfolio" class="btn btn-ghost">Ver projetos</a>
+    </div>
+  </div>
+</section>
+
+<section id="sobre">
+  <div class="wrap">
+    <div class="section-label">Sobre mim</div>
+    <h2 class="section-title">Quem está por trás do código</h2>
+    <div class="about">
+      <div class="about-card">
+        <p>Tenho 18 anos e sou de Cianorte, no interior do Paraná. Estou cursando Análise e Desenvolvimento de Sistemas na UMFG e, desde cedo, me apaixonei por transformar ideias em sites que realmente funcionam e ajudam negócios a crescer.</p>
+        <p>Hoje me dedico a criar sites para pequenos negócios da região — academias, clínicas, escritórios e comércios locais — que ainda não têm presença na internet ou têm um site ultrapassado. Meu objetivo é simples: ajudar esses negócios a aparecerem mais no Google, passarem mais confiança e conquistarem mais clientes.</p>
+        <p>Trabalho com atenção aos detalhes, prazos combinados com clareza e um site final que o cliente realmente goste de mostrar.</p>
+        <div class="about-stats">
+          <div class="stat"><b>18</b><span>anos</span></div>
+          <div class="stat"><b>ADS</b><span>UMFG Cianorte</span></div>
+          <div class="stat"><b>100%</b><span>foco em pequenos negócios</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="servicos">
+  <div class="wrap">
+    <div class="section-label">O que eu faço</div>
+    <h2 class="section-title">Serviços</h2>
+    <p class="section-sub">Soluções simples e diretas para colocar (ou recolocar) seu negócio na internet.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🌐</div>
+        <h3>Sites institucionais</h3>
+        <p>Site profissional com as informações do seu negócio: sobre, serviços, localização e contato — tudo em um só lugar.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🚀</div>
+        <h3>Landing pages</h3>
+        <p>Página única, direta e objetiva, feita para apresentar seu negócio e converter visitantes em clientes.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔧</div>
+        <h3>Melhoria de sites existentes</h3>
+        <p>Seu site já existe mas está com problemas, desatualizado ou difícil de usar? Eu modernizo e corrijo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="portfolio">
+  <div class="wrap">
+    <div class="section-label">Trabalhos recentes</div>
+    <h2 class="section-title">Portfólio</h2>
+    <p class="section-sub">Alguns projetos que já coloquei no ar.</p>
+    <div class="project-card">
+      <div class="project-visual">
+        <div class="browser-chrome"><span></span><span></span><span></span></div>
+        <span class="tag">Landing Page</span>
+        <h4>NovaHidráulica</h4>
+      </div>
+      <div class="project-info">
+        <p>Landing page para negócio de hidráulica, com apresentação de serviços, contato e visual profissional, publicada e no ar.</p>
+        <a href="https://philipemoreira.github.io/landing-page-sp-hidraulicos/" class="btn btn-primary" target="_blank" rel="noopener">Ver site ao vivo →</a>
+      </div>
+    </div>
+    <p class="more-soon">Mais projetos em breve — este espaço vai crescer a cada cliente atendido.</p>
+  </div>
+</section>
+
+<section id="contato">
+  <div class="wrap">
+    <div class="contact-card">
+      <h2>Vamos colocar seu negócio na internet?</h2>
+      <p>Me chama e vamos conversar sobre prazo, valor e como seu site pode ficar.</p>
+      <div class="contact-ctas">
+        <a href="https://wa.me/5544999215031" class="btn btn-primary" target="_blank" rel="noopener">💬 Chamar no WhatsApp</a>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=xphilipsilva@gmail.com" class="btn btn-ghost" target="_blank" rel="noopener">✉️ Enviar e-mail</a>
+      </div>
+      <div class="contact-links">
+        <a href="https://linkedin.com/in/philipe-emanuel-dev" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/philipemoreira" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=xphilipsilva@gmail.com" target="_blank" rel="noopener">xphilipsilva@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> Philipe Emanuel — Desenvolvedor Front-End, Cianorte/PR
+</footer>
+
+<a href="https://wa.me/5544999215031" class="float-wa" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+  menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+</script>
+
+</body>
+</html>
