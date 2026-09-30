@@ -66,12 +66,12 @@
     font-size:.95rem; color:var(--text-muted); transition:color .2s;
   }
   .nav-links a:hover{color:var(--text-main);}
-  .nav-cta{
+  .nav-links a.nav-cta{
     background:linear-gradient(135deg,var(--blue-600),var(--cyan-400));
     color:#031024; font-weight:600; padding:10px 20px; border-radius:999px;
     font-size:.9rem; transition:transform .2s, box-shadow .2s;
   }
-  .nav-cta:hover{transform:translateY(-2px); box-shadow:0 8px 24px rgba(37,99,235,.35);}
+  .nav-links a.nav-cta:hover{color:#031024; transform:translateY(-2px); box-shadow:0 8px 24px rgba(37,99,235,.35);}
   .menu-btn{display:none; background:none; border:none; color:var(--text-main); font-size:1.6rem; cursor:pointer;}
 
   /* HERO */
@@ -119,7 +119,14 @@
   .btn{
     padding:14px 28px; border-radius:999px; font-weight:600; font-size:.98rem;
     display:inline-flex; align-items:center; gap:8px; transition:transform .2s, box-shadow .2s, background .2s;
+    position:relative; overflow:hidden;
   }
+  .btn::after{
+    content:""; position:absolute; top:0; left:-75%; width:50%; height:100%;
+    background:linear-gradient(120deg, transparent, rgba(255,255,255,.35), transparent);
+    transform:skewX(-20deg); transition:left .5s ease;
+  }
+  .btn:hover::after{left:125%;}
   .btn-primary{
     background:linear-gradient(135deg,var(--blue-600),var(--cyan-400));
     color:#031024;
@@ -181,24 +188,43 @@
   .service-card p{color:var(--text-muted); font-size:.94rem; line-height:1.6;}
 
   /* PORTFOLIO */
+  .projects-list{
+    display:flex; flex-direction:column; gap:28px; max-width:820px; margin:0 auto;
+  }
   .project-card{
     background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius-lg);
-    overflow:hidden; max-width:820px; margin:0 auto;
+    overflow:hidden;
     display:grid; grid-template-columns:1fr 1fr;
+    position:relative;
   }
   .project-visual{
-    background:linear-gradient(160deg,var(--navy-700),var(--navy-800));
+    background:
+      radial-gradient(circle at 20% 20%, rgba(59,130,246,.25), transparent 55%),
+      radial-gradient(circle at 85% 85%, rgba(34,211,238,.18), transparent 50%),
+      linear-gradient(160deg,var(--navy-700),var(--navy-800));
     padding:40px 30px; display:flex; flex-direction:column; justify-content:center; gap:14px;
-    position:relative; min-height:260px;
+    position:relative; min-height:260px; overflow:hidden;
+  }
+  .project-visual::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size:26px 26px;
+    -webkit-mask-image:linear-gradient(160deg, rgba(0,0,0,.7), transparent 70%);
+    mask-image:linear-gradient(160deg, rgba(0,0,0,.7), transparent 70%);
+    pointer-events:none;
   }
   .browser-chrome{
-    display:flex; gap:6px; margin-bottom:8px;
+    display:flex; gap:6px; margin-bottom:8px; position:relative; z-index:1;
   }
   .browser-chrome span{width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,.18);}
-  .project-visual h4{font-size:1.3rem; font-weight:800;}
+  .project-visual h4{font-size:1.3rem; font-weight:800; position:relative; z-index:1;}
   .project-visual .tag{
     display:inline-block; background:rgba(59,130,246,.18); color:var(--blue-400);
     font-size:.75rem; font-weight:700; padding:4px 12px; border-radius:999px; width:fit-content;
+    position:relative; z-index:1;
   }
   .project-info{padding:36px 30px; display:flex; flex-direction:column; justify-content:center;}
   .project-info p{color:var(--text-muted); line-height:1.7; margin-bottom:22px; font-size:.96rem;}
@@ -206,6 +232,32 @@
   .more-soon{
     text-align:center; margin-top:28px; color:var(--text-muted); font-size:.9rem;
   }
+
+  /* TILT + SPOTLIGHT HOVER EFFECT */
+  .tilt{
+    position:relative; z-index:0;
+    transition:transform .15s ease-out, box-shadow .35s ease, border-color .35s ease;
+    will-change:transform;
+  }
+  .tilt::before{
+    content:"";
+    position:absolute; inset:0; border-radius:inherit;
+    background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(96,165,250,.25), transparent 55%);
+    opacity:0; transition:opacity .35s ease;
+    pointer-events:none; z-index:-1;
+  }
+  .tilt:hover::before{opacity:1;}
+  .tilt:hover{
+    box-shadow:0 24px 60px rgba(3,8,20,.55);
+    border-color:rgba(59,130,246,.5);
+  }
+
+  /* SCROLL REVEAL */
+  .reveal{
+    opacity:0; transform:translateY(24px);
+    transition:opacity .7s ease, transform .7s ease;
+  }
+  .reveal.in-view{opacity:1; transform:translateY(0);}
 
   /* CONTACT */
   .contact-card{
@@ -334,26 +386,28 @@
     <div class="section-label">Trabalhos recentes</div>
     <h2 class="section-title">Portfólio</h2>
     <p class="section-sub">Alguns projetos que já coloquei no ar.</p>
-    <div class="project-card">
-      <div class="project-visual">
-        <div class="browser-chrome"><span></span><span></span><span></span></div>
-        <span class="tag">Site Institucional</span>
-        <h4>OhMyGym</h4>
+    <div class="projects-list">
+      <div class="project-card">
+        <div class="project-visual">
+          <div class="browser-chrome"><span></span><span></span><span></span></div>
+          <span class="tag">Site Institucional</span>
+          <h4>OhMyGym</h4>
+        </div>
+        <div class="project-info">
+          <p>Site institucional para academia, com apresentação de planos e modalidades, fotos da estrutura e contato, publicado e no ar.</p>
+          <a href="https://ohmygym.com.br" class="btn btn-primary" target="_blank" rel="noopener">Ver site ao vivo →</a>
+        </div>
       </div>
-      <div class="project-info">
-        <p>Site institucional para academia, com apresentação de planos e modalidades, fotos da estrutura e contato, publicado e no ar.</p>
-        <a href="https://ohmygym.com.br" class="btn btn-primary" target="_blank" rel="noopener">Ver site ao vivo →</a>
-      </div>
-    </div>
-    <div class="project-card">
-      <div class="project-visual">
-        <div class="browser-chrome"><span></span><span></span><span></span></div>
-        <span class="tag">Landing Page</span>
-        <h4>NovaHidráulica</h4>
-      </div>
-      <div class="project-info">
-        <p>Landing page para negócio de hidráulica, com apresentação de serviços, contato e visual profissional, publicada e no ar.</p>
-        <a href="https://philipemoreira.github.io/Nova-Hidraulica-Apresenta-o/" class="btn btn-primary" target="_blank" rel="noopener">Ver site ao vivo →</a>
+      <div class="project-card">
+        <div class="project-visual">
+          <div class="browser-chrome"><span></span><span></span><span></span></div>
+          <span class="tag">Landing Page</span>
+          <h4>NovaHidráulica</h4>
+        </div>
+        <div class="project-info">
+          <p>Landing page para negócio de hidráulica, com apresentação de serviços, contato e visual profissional, publicada e no ar.</p>
+          <a href="https://philipemoreira.github.io/Nova-Hidraulica-Apresenta-o/" class="btn btn-primary" target="_blank" rel="noopener">Ver site ao vivo →</a>
+        </div>
       </div>
     </div>
     <p class="more-soon">Mais projetos em breve — este espaço vai crescer a cada cliente atendido.</p>
@@ -390,6 +444,43 @@
   const navLinks = document.getElementById('navLinks');
   menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
   navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Efeito de inclinação 3D + brilho seguindo o mouse
+  const tiltEls = document.querySelectorAll('.service-card, .project-card');
+  const isTouch = window.matchMedia('(hover: none)').matches;
+  if (!isTouch) {
+    tiltEls.forEach(card => {
+      card.classList.add('tilt');
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        const rotateX = ((y - cy) / cy) * -5;
+        const rotateY = ((x - cx) / cx) * 5;
+        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+        card.style.setProperty('--mx', `${(x / rect.width) * 100}%`);
+        card.style.setProperty('--my', `${(y / rect.height) * 100}%`);
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+  }
+
+  // Fade-in suave conforme rola a página
+  const revealEls = document.querySelectorAll('.about-card, .service-card, .project-card, .contact-card');
+  revealEls.forEach(el => el.classList.add('reveal'));
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => observer.observe(el));
 </script>
 
 </body>
